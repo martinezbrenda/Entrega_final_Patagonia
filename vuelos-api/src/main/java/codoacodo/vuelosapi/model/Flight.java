@@ -1,10 +1,12 @@
 package codoacodo.vuelosapi.model;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,10 +23,11 @@ public class Flight {
     private double price;
     private String frequency;
 
-
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    private List<Long> assignedCrew = new ArrayList<>();
 
     public Flight(String origin, String destination, String departureDate, String arrivalDate, double price, String frequency, Company company) {
         this.origin = origin;

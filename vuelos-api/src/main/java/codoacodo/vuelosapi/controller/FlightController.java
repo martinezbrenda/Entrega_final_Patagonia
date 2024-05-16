@@ -92,7 +92,7 @@ public class FlightController {
     public Optional<FlightDTO> addFlightToCompany(@RequestBody Flight flight, @RequestParam long companyId){
         return flightService.addFlightToCompany(flight,companyId);
     }
-    // este se le pasa solo los id de los vuelos que queremos asociar con esa compania
+    // este se le pasa solo los id de los vuelos que queremos asociar con esa compania, facilita la carga
     @PostMapping("/addToCompany")
     public Optional<List<FlightDTO>> addToCompany(@RequestBody List<Long> flightsId, @RequestParam long companyId){
         return flightService.addToCompany(flightsId, companyId);
