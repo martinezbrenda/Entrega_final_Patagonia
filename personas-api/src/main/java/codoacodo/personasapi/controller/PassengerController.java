@@ -38,6 +38,10 @@ public class PassengerController {
     public Passenger update(@RequestBody Passenger passenger, @PathVariable(name ="dni") long dni) {
         return passengerService.update(passenger,dni);
     }
+    @PutMapping("/updateAll")
+    public List<Passenger> updateAll(@RequestBody List<Passenger> passenger) {
+        return passengerService.updateAll(passenger);
+    }
 
     @DeleteMapping("/delete/{dni}")
     public String delete(@PathVariable(name ="dni") long dni){

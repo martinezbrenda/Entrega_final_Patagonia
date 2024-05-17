@@ -19,9 +19,20 @@ public class FlightCrewController {
     public List<FlightCrew> list (){
         return flightCrewService.list();
     }
+
     @GetMapping("/findById/{dni}")
     public FlightCrew findById(@PathVariable(name = "dni") long dni){
         return flightCrewService.findById(dni);
+    }
+
+    @GetMapping("/findByIdBody")
+    public FlightCrew findByIdBody(@RequestBody long dni){
+        return flightCrewService.findById(dni);
+    }
+
+    @GetMapping("/findAllById")
+    public List<FlightCrew> findAllById(@RequestBody List<Long> crewIds){
+        return flightCrewService.findAllById(crewIds);
     }
 
     @PostMapping("/add")
@@ -36,6 +47,11 @@ public class FlightCrewController {
     @PutMapping("/update/{dni}")
     public FlightCrew update (@RequestBody FlightCrew flightCrew, @PathVariable(name ="dni") long dni){
         return flightCrewService.update(flightCrew, dni);
+    }
+
+    @PutMapping("/updateAll")
+    public List<FlightCrew> updateAll(@RequestBody List<FlightCrew> flightCrewList ){
+        return flightCrewService.updateAll(flightCrewList);
     }
 
     @DeleteMapping("/delete/{dni}")

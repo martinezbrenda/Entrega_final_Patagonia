@@ -9,6 +9,7 @@ import codoacodo.vuelosapi.utils.FlightUtils;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,13 +32,17 @@ public class FlightService {
     FlightConfiguration flightConfiguration;
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    private FlightClient flightClient;
 
     private static String GET_ALL_FLIGHT_CREW = "http://localhost:8181/flightCrew/list";
+    private static String UPDATE_ALL_FLIGHT_CREW = "http://localhost:8181/flightCrew/updateAll";
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    public List<FlightDTO> getAllFlights() {
-        return flightUtils.flightListMapper(flightRepository.findAll(),getDolarTarjeta());
+    public List<Flight> getAllFlights() {
+        //return flightUtils.flightListMapper(flightRepository.findAll(),getDolarTarjeta());
+        return flightRepository.findAll();
     }
 
     public Optional<List<FlightDTO>> findByCompany(long companyId) {
@@ -155,7 +160,7 @@ public class FlightService {
         return Optional.of(flightUtils.flightListMapper(flightList, getDolarTarjeta()));
     }
 
-    public FlightDTO addCrew(List<Long> flightCrewIds, long flightId) {
+    /*public FlightDTO addCrew(List<Long> flightCrewIds, long flightId) {
         //validar el flightID
         Optional<Flight> flight = flightRepository.findById(flightId);
         if(flight.isEmpty())
@@ -180,8 +185,9 @@ public class FlightService {
             }
         }
         // guardar la actualizacion de los tripulantes
-
-
+        ResponseEntity<FlightCrew> response = restTemplate.postForEntity(UPDATE_ALL_FLIGHT_CREW,flightCrewList,FlightCrew.class);
+        System.out.println("\nRESPUESTA DEL UPDATE\n");
+        System.out.println(response);
         //asignar los tripulantes al vuelo
         Flight existingFlight = flight.get();
         List<Long> assignedCrew = existingFlight.getAssignedCrew();
@@ -193,8 +199,85 @@ public class FlightService {
         }
         flightRepository.save(existingFlight);
         return flightUtils.flightMapper(existingFlight, getDolarTarjeta());
-    }
+    }*/
+    public FlightDTO addCrew(List<Long> flightCrewIds, long flightId){
+        //validar el flightId
+        Optional<Flight> flight = flightRepository.findById(flightId);
+        if(flight.isEmpty())
+            throw new FlightException("No existe el vuelo con id: "+ flightId);
+        //validar los dnis del crew
+        List<FlightCrew> flightCrewList = flightClient.listAll();
+        for (Long dni : flightCrewIds) {
+            boolean found = false;
+            for (FlightCrew crewMember : flightCrewList) {
+                if (crewMember.getDni().equals(dni)) {
+                    found = true;
+                    //asignar el vuelo a los tripulantes
+                    List<Long> assignedFlights = crewMember.getAssignedFlights();
+                    assignedFlights.add(flightId);
+                    crewMember.setAssignedFlights(assignedFlights);
 
+                    break;
+                }
+            }
+            if (!found) {
+                throw new FlightException("No existen Crew members con esos dnis");
+            }
+        }
+        // asigno el vuelo a los tripulantes
+        flightClient.updateAll(flightCrewList);
+        //asigno los tripulantes al vuelo
+
+        Flight existingFlight = flight.get();
+        List<Long> assignedCrew = existingFlight.getAssignedCrew();
+        if(assignedCrew == null){
+            existingFlight.setAssignedCrew(flightCrewIds);
+        }else{
+            assignedCrew.addAll(flightCrewIds);
+            existingFlight.setAssignedCrew(assignedCrew);
+        }
+        flightRepository.save(existingFlight);
+        return flightUtils.flightMapper(existingFlight, getDolarTarjeta());
+
+    }
+    public FlightDTO addPassengers(List<Long> passengersId, long flightId) {
+        //validar el flightId
+        Optional<Flight> flight = flightRepository.findById(flightId);
+        if(flight.isEmpty())
+            throw new FlightException("No existe el vuelo con id: "+ flightId);
+        //validar los dnis
+        List<Passenger> passengerList = flightClient.listAllPassengers();
+        for (Long dni : passengersId) {
+            boolean found = false;
+            for (Passenger passenger : passengerList) {
+                if (passenger.getDni().equals(dni)) {
+                    found = true;
+                    //asignar el vuelo a los tripulantes
+                    List<Long> assignedFlights = passenger.getAssignedFlights();
+                    assignedFlights.add(flightId);
+                    passenger.setAssignedFlights(assignedFlights);
+                    break;
+                }
+            }
+            if (!found) {
+                throw new FlightException("No existen Crew members con esos dnis");
+            }
+        }
+        // asigno el vuelo a los tripulantes
+        flightClient.updateAllPassengers(passengerList);
+        //asigno los tripulantes al vuelo
+
+        Flight existingFlight = flight.get();
+        List<Long> assignedCrew = existingFlight.getAssignedPassengers();
+        if(assignedCrew == null){
+            existingFlight.setAssignedCrew(passengersId);
+        }else{
+            assignedCrew.addAll(passengersId);
+            existingFlight.setAssignedCrew(assignedCrew);
+        }
+        flightRepository.save(existingFlight);
+        return flightUtils.flightMapper(existingFlight, getDolarTarjeta());
+    }
     public Optional<Flight> updateFlight(Long id, Flight updatedFlight){
         Flight existingFlight = flightRepository.findById(id).orElse(null);
         if (existingFlight != null) {
@@ -218,5 +301,7 @@ public class FlightService {
         else
             throw new FlightException("El vuelo con ID " + id + " no existe, no se puede eliminar");
     }
+
+
 }
 

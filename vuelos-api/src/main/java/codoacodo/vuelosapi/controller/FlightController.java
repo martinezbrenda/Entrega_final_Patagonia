@@ -1,9 +1,7 @@
 package codoacodo.vuelosapi.controller;
 
-import codoacodo.vuelosapi.model.Company;
-import codoacodo.vuelosapi.model.Dolar;
-import codoacodo.vuelosapi.model.Flight;
-import codoacodo.vuelosapi.model.FlightDTO;
+import codoacodo.vuelosapi.model.*;
+import codoacodo.vuelosapi.services.FlightClient;
 import codoacodo.vuelosapi.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +16,11 @@ public class FlightController {
     @Autowired
     private FlightService flightService;
 
+    @Autowired
+    private FlightClient flightClient;
+
     @GetMapping("/list")
-    public List<FlightDTO> getAllFlights(){
+    public List<Flight> getAllFlights(){
         return flightService.getAllFlights();
     }
 
@@ -73,6 +74,11 @@ public class FlightController {
         return flightService.getDolarTarjeta();
     }
 
+    @GetMapping("/flightCrew/list")
+    public List<FlightCrew> listAll(){
+        return flightClient.listAll();
+    }
+
     @PostMapping("/add")
     public Flight addFlight (@RequestBody Flight flight){
         return flightService.addFlight(flight);
@@ -102,6 +108,12 @@ public class FlightController {
     public FlightDTO addCrew(@RequestBody List<Long> flightCrew, @RequestParam long flightId){
         return flightService.addCrew(flightCrew, flightId);
     }
+
+    @PostMapping("/addPassengers")
+    public FlightDTO addPassengers(@RequestBody List<Long> passengersId, @RequestParam long flightId){
+        return flightService.addPassengers(passengersId, flightId);
+    }
+
     @PutMapping("/update/{id}")
     public Optional<Flight> updateFlight(@PathVariable Long id, @RequestBody Flight flight){
         return flightService.updateFlight(id,flight);

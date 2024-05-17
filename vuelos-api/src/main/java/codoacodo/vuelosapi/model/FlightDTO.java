@@ -23,5 +23,9 @@ public class FlightDTO {
     private String frequency;
     private Company company;
     private List<Long> assignedCrew;
+    private List<Long> assignedPassengerns;
+
+
+
 
 }

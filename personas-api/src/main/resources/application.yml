@@ -1,6 +1,6 @@
 spring:
   application:
-    name: flight-server
+    name: personas-api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/airline
@@ -14,7 +14,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 server:
-  port: 8080
+  port: 8181
 eureka:
   client:
     serviceUrl:

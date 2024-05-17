@@ -49,6 +49,22 @@ public class PassengerService {
         return passenger;
     }
 
+    public List<Passenger> updateAll(List<Passenger> passengerList) {
+        for(Passenger passenger :passengerList){
+            Passenger existingPassenger = passengerRepository.findById(passenger.getDni()).orElse(null);
+            if(existingPassenger == null ){
+                throw new PassengerException("No existe pasajero con el dni: " + passenger.getDni());
+            }
+
+            existingPassenger.setName(passenger.getName());
+            existingPassenger.setGender(passenger.getGender());
+            existingPassenger.setSeatNumber(passenger.getSeatNumber());
+            existingPassenger.setEmail(passenger.getEmail());
+            passengerRepository.save(existingPassenger);
+
+        }
+        return passengerList;
+    }
     public String delete(long dni) {
         Optional<Passenger> existingPassenger = passengerRepository.findById(dni);
         if(existingPassenger.isEmpty()){
@@ -63,4 +79,6 @@ public class PassengerService {
         passengerRepository.deleteAllById(dni);
         return "Eliminado con exito";
     }
+
+
 }

@@ -28,6 +28,8 @@ public class Flight {
     private Company company;
 
     private List<Long> assignedCrew = new ArrayList<>();
+    private List<Long> assignedPassengers= new ArrayList<>();
+
 
     public Flight(String origin, String destination, String departureDate, String arrivalDate, double price, String frequency, Company company) {
         this.origin = origin;
