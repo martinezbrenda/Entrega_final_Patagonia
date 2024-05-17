@@ -37,6 +37,7 @@ public class Flight {
         this.price = price;
         this.frequency = frequency;
         this.company = company;
+        this.assignedCrew.add(0L);
     }
     public Company getCompany() {
         return company;

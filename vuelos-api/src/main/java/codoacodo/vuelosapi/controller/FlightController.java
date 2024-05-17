@@ -98,6 +98,10 @@ public class FlightController {
         return flightService.addToCompany(flightsId, companyId);
     }
 
+    @PostMapping("/addCrew")
+    public FlightDTO addCrew(@RequestBody List<Long> flightCrew, @RequestParam long flightId){
+        return flightService.addCrew(flightCrew, flightId);
+    }
     @PutMapping("/update/{id}")
     public Optional<Flight> updateFlight(@PathVariable Long id, @RequestBody Flight flight){
         return flightService.updateFlight(id,flight);
