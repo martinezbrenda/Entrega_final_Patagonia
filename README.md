@@ -37,5 +37,5 @@ Servicio A --- Feign Client ---> Eureka Server ----> Servicio B
 ### Descripción General del Proyecto
 Simular una gestión real de vuelos de una aerolinea desde la api de vuelos.
 
-[![](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/noelianav/](https://www.linkedin.com/in/brenda-martinez-772132255/))
+[![](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/brenda-martinez-772132255/))
 
