@@ -4,6 +4,7 @@
 
 ### Objetivo del Proyecto
 Implementar dos microservicios, donde cada uno de ellos pueda realizar las operaciones CRUD. A su vez, uno de los microservicios debe consumir información generada por el otro y utilizarla a nivel lógico.
+Para realizar lo pedido buscamos simular una gestión real de vuelos de una aerolinea desde la api de vuelos.
 
 ## 2. Funcionalidades de las APIs
 
@@ -34,8 +35,5 @@ Implementar dos microservicios, donde cada uno de ellos pueda realizar las opera
 Se escogió el siguiente tipo de arquitectura:
 Servicio A --- Feign Client ---> Eureka Server ----> Servicio B
 
-### Descripción General del Proyecto
-Simular una gestión real de vuelos de una aerolinea desde la api de vuelos.
-
-[![](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/brenda-martinez-772132255/))
+[![](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/brenda-martinez-772132255/)
 
