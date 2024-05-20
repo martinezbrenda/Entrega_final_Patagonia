@@ -34,7 +34,7 @@ public class FlightController {
        return flightService.findByCompany(companyId);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Optional<FlightDTO> findById(@PathVariable(name = "id") Long id){
         return flightService.findById(id);
     }

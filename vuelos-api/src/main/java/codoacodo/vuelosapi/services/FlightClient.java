@@ -26,12 +26,15 @@ public interface FlightClient {
     List<FlightCrew> findByAllId(@RequestBody List<Long> crewIds);
 
     @PutMapping("/flightCrew/update/{dni}")
-    FlightCrew update (@RequestBody FlightCrew flightCrew, @PathVariable(name ="dni") long dni);
+     FlightCrew updateCrew(@RequestBody FlightCrew flightCrew, @PathVariable(name ="dni") long dni);
 
     @PutMapping("/flightCrew/updateAll")
-     List<FlightCrew> updateAllCrew(@RequestBody List<FlightCrew> flightCrewList );
+    List<FlightCrew> updateAllCrew(@RequestBody List<FlightCrew> flightCrewList );
 
     @PutMapping("/passenger/updateAll")
     List<Passenger> updateAllPassengers(@RequestBody List<Passenger> passengerList );
+
+    @PutMapping("/passenger/update/{dni}")
+    Passenger updatePassenger(@RequestBody Passenger passenger,  @PathVariable(name ="dni") long dni );
 
 }

@@ -292,6 +292,10 @@ public class FlightService {
     }
     public Optional<Flight> updateFlight(Long id, Flight updatedFlight){
         Flight existingFlight = flightRepository.findById(id).orElse(null);
+        List<Long> oldCrewList = new ArrayList<>();
+        List<Long> newCrewList = new ArrayList<>();
+        List<Long> oldPassengersList = new ArrayList<>();
+        List<Long> newPassengersList = new ArrayList<>();
         if (existingFlight != null) {
             existingFlight.setOrigin(updatedFlight.getOrigin());
             existingFlight.setDestination(updatedFlight.getDestination());
@@ -299,6 +303,33 @@ public class FlightService {
             existingFlight.setPrice(updatedFlight.getPrice());
             existingFlight.setFrequency(updatedFlight.getFrequency());
             existingFlight.setCompany(updatedFlight.getCompany());
+            oldCrewList = existingFlight.getAssignedCrew();
+            newCrewList = updatedFlight.getAssignedCrew();
+            if (oldCrewList != newCrewList){
+                for(Long crewDni : oldCrewList){
+                    if(!newCrewList.contains(crewDni)){
+                        FlightCrew flightCrew = flightClient.findFlightCrewByDni(crewDni);
+                        List<Long> assignedFlights = flightCrew.getAssignedFlights();
+                        assignedFlights.remove(id);
+                        flightCrew.setAssignedFlights(assignedFlights);
+                        flightClient.updateCrew(flightCrew,crewDni);
+                    }
+                }
+            }
+            oldPassengersList = existingFlight.getAssignedPassengers();
+            newPassengersList = updatedFlight.getAssignedPassengers();
+            if(oldPassengersList != newPassengersList){
+                for(Long passengerDni : oldPassengersList){
+                    if(!newPassengersList.contains(passengerDni)){
+                        Passenger passenger = flightClient.findPassengerByDni(passengerDni);
+                        List<Long> assignedFlights = passenger.getAssignedFlights();
+                        assignedFlights.remove(id);
+                        passenger.setAssignedFlights(assignedFlights);
+                        flightClient.updatePassenger(passenger,passengerDni);
+                    }
+                }
+            }
+
             existingFlight.setAssignedCrew(updatedFlight.getAssignedCrew());
             existingFlight.setAssignedPassengers(updatedFlight.getAssignedPassengers());
             flightRepository.save(existingFlight);
@@ -310,10 +341,36 @@ public class FlightService {
 
     public void deleteFlight(Long id){
         Flight existingFlight = flightRepository.findById(id).orElse(null);
-        if(existingFlight != null)
+        List<Long> oldCrewList = new ArrayList<>();
+        List<Long> oldPassengersList = new ArrayList<>();
+
+        if(existingFlight != null) {
+
+            oldCrewList = existingFlight.getAssignedCrew();
+
+            for(Long crewDni : oldCrewList){
+                    FlightCrew flightCrew = flightClient.findFlightCrewByDni(crewDni);
+                    List<Long> assignedFlights = flightCrew.getAssignedFlights();
+                    assignedFlights.remove(id);
+                    flightCrew.setAssignedFlights(assignedFlights);
+                    flightClient.updateCrew(flightCrew,crewDni);
+            }
+
+            oldPassengersList = existingFlight.getAssignedPassengers();
+
+                for(Long passengerDni : oldPassengersList) {
+                    Passenger passenger = flightClient.findPassengerByDni(passengerDni);
+                    List<Long> assignedFlights = passenger.getAssignedFlights();
+                    assignedFlights.remove(id);
+                    passenger.setAssignedFlights(assignedFlights);
+                    flightClient.updatePassenger(passenger, passengerDni);
+                }
+
             flightRepository.deleteById(id);
-        else
+    }
+        else {
             throw new FlightException("El vuelo con ID " + id + " no existe, no se puede eliminar");
+        }
     }
 
 
