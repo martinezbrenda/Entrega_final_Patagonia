@@ -19,7 +19,7 @@ public class PassengerService {
         return passengerRepository.findAll();
     }
 
-    public Passenger findById(long dni) {
+    public Passenger findByDni(long dni) {
         Optional<Passenger> existingPassenger = passengerRepository.findById(dni);
         if(existingPassenger.isEmpty()){
             throw new PassengerException("No existe pasajero con el dni: " + dni);

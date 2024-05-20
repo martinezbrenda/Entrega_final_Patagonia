@@ -3,10 +3,8 @@ package codoacodo.vuelosapi.services;
 import codoacodo.vuelosapi.model.FlightCrew;
 import codoacodo.vuelosapi.model.Passenger;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,19 +16,22 @@ public interface FlightClient {
     @GetMapping("/passenger/list")
     List<Passenger> listAllPassengers();
 
-    @GetMapping("/flightCrew/findByIdBody")
-     FlightCrew findById(@RequestBody long dni);
+    @GetMapping("/flightCrew/findByDni/{dni}")
+     FlightCrew findFlightCrewByDni(@PathVariable long dni);
+
+    @GetMapping("/passenger/findByDni/{dni}")
+    Passenger findPassengerByDni(@PathVariable (name ="dni")long dni);
 
     @GetMapping("/flightCrew/findAllById")
     List<FlightCrew> findByAllId(@RequestBody List<Long> crewIds);
 
-    @PutMapping("flightCrew/update/{dni}")
+    @PutMapping("/flightCrew/update/{dni}")
     FlightCrew update (@RequestBody FlightCrew flightCrew, @PathVariable(name ="dni") long dni);
 
-    @PutMapping("flightCrew/updateAll")
+    @PutMapping("/flightCrew/updateAll")
      List<FlightCrew> updateAll(@RequestBody List<FlightCrew> flightCrewList );
 
-    @PutMapping("flightCrew/updateAll")
+    @PutMapping("/passenger/updateAll")
     List<Passenger> updateAllPassengers(@RequestBody List<Passenger> passengerList );
 
 }

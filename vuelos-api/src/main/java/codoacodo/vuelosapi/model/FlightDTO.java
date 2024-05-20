@@ -1,13 +1,8 @@
 package codoacodo.vuelosapi.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,8 +17,8 @@ public class FlightDTO {
     private double convertedPrice;
     private String frequency;
     private Company company;
-    private List<Long> assignedCrew;
-    private List<Long> assignedPassengerns;
+    private List<String> crew_names;
+   private List<String> passenger_names;
 
 
 

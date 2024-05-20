@@ -40,6 +40,8 @@ public class Flight {
         this.frequency = frequency;
         this.company = company;
         this.assignedCrew.add(0L);
+        this.assignedPassengers.add(0L);
+
     }
     public Company getCompany() {
         return company;

@@ -19,7 +19,7 @@ public class FlightCrewService {
         return flightCrewRepository.findAll();
     }
 
-    public FlightCrew findById(long dni) {
+    public FlightCrew findByDni(long dni) {
         Optional<FlightCrew> existingFlightCrew = flightCrewRepository.findById(dni);
         if(existingFlightCrew.isEmpty()){
             throw new FlightCrewException("No existe miembro con el dni: " + dni);
@@ -89,5 +89,10 @@ public class FlightCrewService {
     }
 
 
-
+    public FlightCrew findByIdBody(long dni) {
+        Optional<FlightCrew> f = flightCrewRepository.findById(dni);
+        FlightCrew flightCrew;
+        flightCrew = f.get();
+        return flightCrew;
+    }
 }

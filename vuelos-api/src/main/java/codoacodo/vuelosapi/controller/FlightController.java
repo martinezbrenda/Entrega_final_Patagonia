@@ -19,6 +19,11 @@ public class FlightController {
     @Autowired
     private FlightClient flightClient;
 
+    @GetMapping("/dto")
+    public List<FlightDTO>flights(){
+        return flightService.flights();
+    }
+
     @GetMapping("/list")
     public List<Flight> getAllFlights(){
         return flightService.getAllFlights();
@@ -33,7 +38,6 @@ public class FlightController {
     public Optional<FlightDTO> findById(@PathVariable(name = "id") Long id){
         return flightService.findById(id);
     }
-
     @GetMapping("/less/{price}")
     public List<FlightDTO> getLessThan(@PathVariable(name = "price") double price){
         return flightService.getLessThan(price);

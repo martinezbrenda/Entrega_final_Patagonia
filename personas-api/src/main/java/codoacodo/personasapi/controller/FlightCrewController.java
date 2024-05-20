@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/flightCrew")
@@ -20,14 +20,14 @@ public class FlightCrewController {
         return flightCrewService.list();
     }
 
-    @GetMapping("/findById/{dni}")
-    public FlightCrew findById(@PathVariable(name = "dni") long dni){
-        return flightCrewService.findById(dni);
+    @GetMapping("/findByDni/{dni}")
+    public FlightCrew findByDni(@PathVariable long dni){
+        return flightCrewService.findByDni(dni);
     }
 
     @GetMapping("/findByIdBody")
     public FlightCrew findByIdBody(@RequestBody long dni){
-        return flightCrewService.findById(dni);
+        return flightCrewService.findByIdBody(dni);
     }
 
     @GetMapping("/findAllById")
