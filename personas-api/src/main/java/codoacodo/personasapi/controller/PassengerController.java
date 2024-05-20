@@ -37,8 +37,8 @@ public class PassengerController {
         return passengerService.update(passenger,dni);
     }
     @PutMapping("/updateAll")
-    public List<Passenger> updateAll(@RequestBody List<Passenger> passenger) {
-        return passengerService.updateAll(passenger);
+    public List<Passenger> updateAllPassengers(@RequestBody List<Passenger> passenger) {
+        return passengerService.updateAllPassengers(passenger);
     }
 
     @DeleteMapping("/delete/{dni}")

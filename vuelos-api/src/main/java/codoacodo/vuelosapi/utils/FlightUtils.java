@@ -25,23 +25,23 @@ public class FlightUtils {
         if(crewIds != null){
             for (Long id : crewIds){
                 FlightCrew flightCrew = flightClient.findFlightCrewByDni(id);
-                crewNames.add(flightCrew.getName());
+                crewNames.add("-" +flightCrew.getRole() +" : " + flightCrew.getName());
             }
         }else{
             crewNames.add("Not assigned yet");
         }
         List<Long> passengersIds = flight.getAssignedPassengers();
-        List<String> passengersNames = new ArrayList<>();
+        List<String> passengerWitSeatNumber = new ArrayList<>();
         if(passengersIds != null){
             for (Long id : passengersIds) {
                 Passenger passenger = flightClient.findPassengerByDni(id);
-                passengersNames.add(passenger.getName());
-        }
+                passengerWitSeatNumber.add("-" + passenger.getName() + " |Seat: " + passenger.getSeatNumber()+"|");
+            }
         }else{
-            passengersNames.add("Not assigned yet");
+            passengerWitSeatNumber.add("Not assigned yet");
         }
         return new FlightDTO(flight.getId(), flight.getOrigin(), flight.getDestination(), flight.getDepartureDate(),
-                flight.getArrivalDate(), flight.getPrice() * price, flight.getFrequency(), flight.getCompany(),crewNames, passengersNames);
+                flight.getArrivalDate(), flight.getPrice() * price, flight.getFrequency(), flight.getCompany(),crewNames, passengerWitSeatNumber);
     }
 
     public List<FlightDTO> flightListMapper(List<Flight> flightList, double price){
@@ -52,24 +52,27 @@ public class FlightUtils {
             if(crewIds != null){
             for (Long id : crewIds){
                 FlightCrew flightCrew = flightClient.findFlightCrewByDni(id);
-                crewNames.add(flightCrew.getName());
+                crewNames.add("-" +flightCrew.getRole() +" : " + flightCrew.getName());
             }
             }else{
                 crewNames.add("Not assigned yet");
             }
             List<Long> passengersIds = flight.getAssignedPassengers();
-            List<String> passengersNames = new ArrayList<>();
+            List<String> passengerWitSeatNumber = new ArrayList<>();
+
+
             if(passengersIds != null){
             for (Long id : passengersIds) {
                 Passenger passenger = flightClient.findPassengerByDni(id);
-                passengersNames.add(passenger.getName());
+
+                passengerWitSeatNumber.add("-" +passenger.getName() + " |Seat: " + passenger.getSeatNumber()+"|");
             }
             }else{
-                passengersNames.add("Not assigned yet");
+                passengerWitSeatNumber.add("Not assigned yet");
             }
             flightDTOList.add(new FlightDTO(flight.getId(), flight.getOrigin(), flight.getDestination(),
                     flight.getDepartureDate(), flight.getArrivalDate(),
-                    flight.getPrice() * price, flight.getFrequency(), flight.getCompany(),crewNames, passengersNames));
+                    flight.getPrice() * price, flight.getFrequency(), flight.getCompany(),crewNames, passengerWitSeatNumber));
         }
         return flightDTOList;
     }

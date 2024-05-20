@@ -29,7 +29,7 @@ public interface FlightClient {
     FlightCrew update (@RequestBody FlightCrew flightCrew, @PathVariable(name ="dni") long dni);
 
     @PutMapping("/flightCrew/updateAll")
-     List<FlightCrew> updateAll(@RequestBody List<FlightCrew> flightCrewList );
+     List<FlightCrew> updateAllCrew(@RequestBody List<FlightCrew> flightCrewList );
 
     @PutMapping("/passenger/updateAll")
     List<Passenger> updateAllPassengers(@RequestBody List<Passenger> passengerList );

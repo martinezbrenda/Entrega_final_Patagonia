@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -227,7 +224,7 @@ public class FlightService {
             }
         }
         // asigno el vuelo a los tripulantes
-        flightClient.updateAll(flightCrewList);
+        flightClient.updateAllCrew(flightCrewList);
         //asigno los tripulantes al vuelo
 
         Flight existingFlight = flight.get();
@@ -266,6 +263,11 @@ public class FlightService {
                         assignedFlights.add(flightId);
                         passenger.setAssignedFlights(assignedFlights);
                     }
+                    Random random = new Random();
+                    int fila = random.nextInt(60) + 1;
+                    char letra = (char) ('A' + random.nextInt(6));
+                    String numeroAsiento = fila + "" + letra;
+                    passenger.setSeatNumber(numeroAsiento);
                     break;
                 }
             }
@@ -280,10 +282,10 @@ public class FlightService {
         Flight existingFlight = flight.get();
         List<Long> assignedPassengers= existingFlight.getAssignedPassengers();
         if(assignedPassengers == null){
-            existingFlight.setAssignedCrew(passengersId);
+            existingFlight.setAssignedPassengers(passengersId);
         }else{
             assignedPassengers.addAll(passengersId);
-            existingFlight.setAssignedCrew(assignedPassengers);
+            existingFlight.setAssignedPassengers(assignedPassengers);
         }
         flightRepository.save(existingFlight);
         return flightUtils.flightMapper(existingFlight, getDolarTarjeta());

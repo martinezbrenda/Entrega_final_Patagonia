@@ -45,23 +45,23 @@ public class PassengerService {
         existingPassenger.setGender(passenger.getGender());
         existingPassenger.setSeatNumber(passenger.getSeatNumber());
         existingPassenger.setEmail(passenger.getEmail());
+        existingPassenger.setAssignedFlights(passenger.getAssignedFlights());
         passengerRepository.save(existingPassenger);
         return passenger;
     }
 
-    public List<Passenger> updateAll(List<Passenger> passengerList) {
+    public List<Passenger> updateAllPassengers(List<Passenger> passengerList) {
         for(Passenger passenger :passengerList){
             Passenger existingPassenger = passengerRepository.findById(passenger.getDni()).orElse(null);
             if(existingPassenger == null ){
                 throw new PassengerException("No existe pasajero con el dni: " + passenger.getDni());
             }
-
             existingPassenger.setName(passenger.getName());
             existingPassenger.setGender(passenger.getGender());
             existingPassenger.setSeatNumber(passenger.getSeatNumber());
             existingPassenger.setEmail(passenger.getEmail());
+            existingPassenger.setAssignedFlights(passenger.getAssignedFlights());
             passengerRepository.save(existingPassenger);
-
         }
         return passengerList;
     }
